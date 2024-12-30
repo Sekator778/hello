@@ -7,6 +7,8 @@ use std::{
     time::Duration,
 };
 
+/// The main function that sets up the TCP listener and thread pool,
+/// and handles incoming connections.
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
     let pool = ThreadPool::new(18);
@@ -22,6 +24,12 @@ fn main() {
     println!("Shutting down.");
 }
 
+/// Handles an incoming TCP connection by reading the request,
+/// determining the appropriate response, and sending it back to the client.
+///
+/// # Arguments
+///
+/// * `stream` - A `TcpStream` representing the incoming connection.
 fn handle_connection(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&stream);
     let request_line = buf_reader.lines().next().unwrap().unwrap();
